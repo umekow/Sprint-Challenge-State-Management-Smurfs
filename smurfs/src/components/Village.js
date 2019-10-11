@@ -1,18 +1,35 @@
-import React, { useEffect } from 'react'; 
-import { connect } from 'react-redux'; 
+import React, { useEffect, useState } from 'react'; 
+import { connect } from 'react-redux';
 
-import { fetchSmurfs } from '../actions'; 
+
+import { fetchSmurfs} from '../actions'; 
+import axios from 'axios';
 
 
 
 
 const Village = props => {
+    
+    const [newSmurf, setNewSmurf] = useState({name: '', height: '', age: ''}); 
+    
     useEffect(() => {
         props.fetchSmurfs(); 
     }, []); 
 
     if (props.isFetching) {
         return <p>Building the Village</p>; 
+    };
+
+    const handleChanges = e =>{
+        e.preventDefault(); 
+        setNewSmurf({...newSmurf, [e.target.name]: e.target.value})
+        console.log(newSmurf);
+    }
+
+    const onSumbit = e => {
+        e.preventDefault()
+        axios.post(`http://localhost:3333/smurfs`, newSmurf).then(r => console.log(r.data)); 
+        props.fetchSmurfs();
     }
 
     return (
@@ -26,6 +43,16 @@ const Village = props => {
                     <p className="height"> {smurf.height} </p>
                 </div>
             ))}
+
+<form>
+        Name:
+        <input onChange={handleChanges} name="name" value={newSmurf.name}/>
+        Age:
+        <input onChange={handleChanges} name="age" value={newSmurf.age}/>
+        Height:
+        <input onChange={handleChanges} name="height" value={newSmurf.height}/>
+        <button onClick={onSumbit}>Add</button>
+    </form>
         </div>
     )
 }

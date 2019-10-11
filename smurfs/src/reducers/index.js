@@ -1,6 +1,6 @@
 import React from 'react'; 
 
-import { START_FETCHING, FETCH_SUCCESS, FETCH_FAILURE } from '../actions'
+import { START_FETCHING, FETCH_SUCCESS, FETCH_FAILURE, ADD_SMURF} from '../actions'
 
 const initialState = {
     village : [], 
@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
                 ...state, 
                 isFetching: false, 
                 error: '', 
-                viallge: action.payload
+                village: action.payload
             }; 
         case FETCH_FAILURE: 
             return {
@@ -30,6 +30,7 @@ const reducer = (state = initialState, action) => {
                 error: action.payload, 
                 isFetching: false, 
             }; 
+     
 
         default:
             return state; 
